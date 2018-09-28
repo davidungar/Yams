@@ -41,6 +41,13 @@ public class YAMLDecoder {
     }
 }
 
+// HACK
+extension Decoder {
+    public var yamlTag: String? {
+        return (self as? _Decoder)?._yamlTag
+    }
+}
+
 private struct _Decoder: Decoder {
 
     private let node: Node
@@ -88,6 +95,14 @@ private struct _Decoder: Decoder {
             throw _typeMismatch(at: codingPath, expectation: Node.Scalar.self, reality: mapping)
         case .sequence(let sequence):
             throw _typeMismatch(at: codingPath, expectation: Node.Scalar.self, reality: sequence)
+        }
+    }
+    
+    var _yamlTag: String? {
+        switch node {
+        case .scalar(let scalar): return scalar.yamlTag
+        case .mapping(let mapping): return mapping.yamlTag
+        case .sequence(let sequence): return sequence.yamlTag
         }
     }
 }
@@ -146,12 +161,6 @@ private struct _KeyedDecodingContainer<Key: CodingKey> : KeyedDecodingContainerP
     }
 }
 
-// HACK
-public extension UnkeyedDecodingContainer {
-    public var yamlTag: String? {
-        return (self as? _UnkeyedDecodingContainer)?._yamlTag
-    }
-}
 private struct _UnkeyedDecodingContainer: UnkeyedDecodingContainer {
 
     private let decoder: _Decoder
@@ -186,10 +195,6 @@ private struct _UnkeyedDecodingContainer: UnkeyedDecodingContainer {
 
     mutating func decode<T>(_ type: T.Type) throws -> T where T: Decodable {
         return try currentDecoder { try $0.decode(type) }
-    }
-    
-    var _yamlTag: String? {
-        return sequence.yamlTag
     }
 
     mutating func nestedContainer<NestedKey>(keyedBy type: NestedKey.Type) throws -> KeyedDecodingContainer<NestedKey> {

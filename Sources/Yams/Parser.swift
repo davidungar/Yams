@@ -269,7 +269,7 @@ private extension Parser {
             pairs.append((key, value))
             event = try parse()
         }
-        let node = Node.mapping(.init(pairs, tag(firstEvent.mappingTag), event.mappingStyle, event.startMark))
+        let node = Node.mapping(.init(pairs, tag(firstEvent.mappingTag), event.mappingStyle, event.startMark, yamlTag: firstEvent.mappingYAMLTag))
         if let anchor = firstEvent.mappingAnchor {
             anchors[anchor] = node
         }
@@ -349,6 +349,9 @@ private class Event {
     var mappingTag: String? {
         return event.data.mapping_start.implicit != 0
             ? nil : string(from: event.data.sequence_start.tag)
+    }
+    var mappingYAMLTag: String? {
+        return UnsafePointer(event.data.mapping_start.tag).map(String.init(cString:))
     }
 
     // start_mark

@@ -18,6 +18,8 @@ extension Node {
         public var style: Style
         /// This mapping's `Mark`.
         public var mark: Mark?
+        
+        public var yamlTag: String?
 
         /// The style to use when emitting a `Mapping`.
         public enum Style: UInt32 {
@@ -35,11 +37,12 @@ extension Node {
         /// - parameter tag:   This mapping's `Tag`.
         /// - parameter style: The style to use when emitting this `Mapping`.
         /// - parameter mark:  This mapping's `Mark`.
-        public init(_ pairs: [(Node, Node)], _ tag: Tag = .implicit, _ style: Style = .any, _ mark: Mark? = nil) {
+        public init(_ pairs: [(Node, Node)], _ tag: Tag = .implicit, _ style: Style = .any, _ mark: Mark? = nil, yamlTag: String? = nil) {
             self.pairs = pairs.map { Pair($0.0, $0.1) }
             self.tag = tag
             self.style = style
             self.mark = mark
+            self.yamlTag = yamlTag
         }
     }
 
