@@ -146,6 +146,12 @@ private struct _KeyedDecodingContainer<Key: CodingKey> : KeyedDecodingContainerP
     }
 }
 
+// HACK
+public extension UnkeyedDecodingContainer {
+    public var yamlTag: String? {
+        return (self as? _UnkeyedDecodingContainer)?._yamlTag
+    }
+}
 private struct _UnkeyedDecodingContainer: UnkeyedDecodingContainer {
 
     private let decoder: _Decoder
@@ -180,6 +186,10 @@ private struct _UnkeyedDecodingContainer: UnkeyedDecodingContainer {
 
     mutating func decode<T>(_ type: T.Type) throws -> T where T: Decodable {
         return try currentDecoder { try $0.decode(type) }
+    }
+    
+    var _yamlTag: String? {
+        return sequence.yamlTag
     }
 
     mutating func nestedContainer<NestedKey>(keyedBy type: NestedKey.Type) throws -> KeyedDecodingContainer<NestedKey> {

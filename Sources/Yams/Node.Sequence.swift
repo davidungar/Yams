@@ -20,6 +20,8 @@ extension Node {
         public var style: Style
         /// The location for this node.
         public var mark: Mark?
+        
+        public var yamlTag: String?
 
         /// The style to use when emitting a `Sequence`.
         public enum Style: UInt32 {
@@ -37,11 +39,12 @@ extension Node {
         /// - parameter tag:   This sequence's `Tag`.
         /// - parameter style: The style to use when emitting this `Sequence`.
         /// - parameter mark:  This sequence's `Mark`.
-        public init(_ nodes: [Node], _ tag: Tag = .implicit, _ style: Style = .any, _ mark: Mark? = nil) {
+        public init(_ nodes: [Node], _ tag: Tag = .implicit, _ style: Style = .any, _ mark: Mark? = nil, yamlTag: String? = nil) {
             self.nodes = nodes
             self.tag = tag
             self.style = style
             self.mark = mark
+            self.yamlTag = yamlTag
         }
     }
 

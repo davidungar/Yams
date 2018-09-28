@@ -310,6 +310,18 @@ extension UInt: ScalarConstructible {
     }
 }
 
+public struct TaggedString: Codable {
+    public let tag: String?
+    public let value: String
+}
+
+extension TaggedString: ScalarConstructible {
+public static func construct(from scalar: Node.Scalar) -> TaggedString? {
+    return String.construct(from: scalar)
+        .map {TaggedString(tag: scalar.yamlTag, value: $0) }
+    }
+}
+
 // MARK: - ScalarConstructible String Conformance
 
 extension String: ScalarConstructible {
