@@ -237,7 +237,7 @@ private extension Parser {
     }
 
     private func loadScalar(from event: Event) throws -> Node {
-        let node = Node.scalar(.init(event.scalarValue, tag(event.scalarTag), event.scalarStyle, event.startMark))
+        let node = Node.scalar(.init(event.scalarValue, tag(event.scalarTag), event.scalarStyle, event.startMark, yamlTag: event.scalarYAMLTag))
         if let anchor = event.scalarAnchor {
             anchors[anchor] = node
         }
@@ -245,13 +245,14 @@ private extension Parser {
     }
 
     private func loadSequence(from firstEvent: Event) throws -> Node {
+        let sequenceYAMLTag = firstEvent.sequenceYAMLTag
         var array = [Node]()
         var event = try parse()
         while event.type != YAML_SEQUENCE_END_EVENT {
             array.append(try loadNode(from: event))
             event = try parse()
         }
-        let node = Node.sequence(.init(array, tag(firstEvent.sequenceTag), event.sequenceStyle, event.startMark))
+        let node = Node.sequence(.init(array, tag(firstEvent.sequenceTag), event.sequenceStyle, event.startMark, yamlTag: sequenceYAMLTag))
         if let anchor = firstEvent.sequenceAnchor {
             anchors[anchor] = node
         }
@@ -268,7 +269,7 @@ private extension Parser {
             pairs.append((key, value))
             event = try parse()
         }
-        let node = Node.mapping(.init(pairs, tag(firstEvent.mappingTag), event.mappingStyle, event.startMark))
+        let node = Node.mapping(.init(pairs, tag(firstEvent.mappingTag), event.mappingStyle, event.startMark, yamlTag: firstEvent.mappingYAMLTag))
         if let anchor = firstEvent.mappingAnchor {
             anchors[anchor] = node
         }
@@ -316,6 +317,9 @@ private class Event {
         // libYAML converts scalar characters into UTF8 if input is other than YAML_UTF8_ENCODING
         return String(bytes: buffer, encoding: .utf8)!
     }
+    var scalarYAMLTag: String? {
+        return UnsafePointer(event.data.scalar.tag).map(String.init(cString:))
+    }
 
     // sequence
     var sequenceAnchor: String? {
@@ -329,6 +333,10 @@ private class Event {
         return event.data.sequence_start.implicit != 0
             ? nil : string(from: event.data.sequence_start.tag)
     }
+    var sequenceYAMLTag: String? {
+        return UnsafePointer(event.data.sequence_start.tag).map(String.init(cString:))
+    }
+
 
     // mapping
     var mappingAnchor: String? {
@@ -341,6 +349,9 @@ private class Event {
     var mappingTag: String? {
         return event.data.mapping_start.implicit != 0
             ? nil : string(from: event.data.sequence_start.tag)
+    }
+    var mappingYAMLTag: String? {
+        return UnsafePointer(event.data.mapping_start.tag).map(String.init(cString:))
     }
 
     // start_mark

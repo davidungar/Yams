@@ -410,7 +410,7 @@ private extension Dictionary {
                 index += 1
             }
         }
-        return Node.Mapping(merge + pairs, mapping.tag, mapping.style)
+        return Node.Mapping(merge + pairs, mapping.tag, mapping.style, yamlTag: mapping.yamlTag)
     }
 }
 
