@@ -289,6 +289,7 @@
 		OBJ_1 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				DefaultBuildSystemTypeForWorkspace = Latest;
 				LastUpgradeCheck = 0930;
 				TargetAttributes = {
 					OBJ_45 = {
@@ -304,6 +305,7 @@
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
+				English,
 				en,
 			);
 			mainGroup = OBJ_5;
@@ -433,9 +435,10 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
 				ONLY_ACTIVE_ARCH = YES;
-				OTHER_SWIFT_FLAGS = "-DXcode";
+				OTHER_SWIFT_FLAGS = "-DXcode -driver-compare-incremental-schemes-path=/Users/ungar/comparo -enable-source-range-dependencies";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "macosx iphoneos iphonesimulator appletvos appletvsimulator watchos watchsimulator";
+				SWIFT_EXEC = "/Users/ungar/s/exp-dep-3/build/Ninja-RelWithDebInfoAssert+stdlib-RelWithDebInfo/swift-macosx-x86_64/bin/swiftc";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
 				SWIFT_VERSION = 4.0;
@@ -480,9 +483,10 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.9;
-				OTHER_SWIFT_FLAGS = "-DXcode";
+				OTHER_SWIFT_FLAGS = "-DXcode -driver-compare-incremental-schemes-path=/Users/ungar/comparo -enable-source-range-dependencies";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "macosx iphoneos iphonesimulator appletvos appletvsimulator watchos watchsimulator";
+				SWIFT_EXEC = "/Users/ungar/s/exp-dep-3/build/Ninja-RelWithDebInfoAssert+stdlib-RelWithDebInfo/swift-macosx-x86_64/bin/swiftc";
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
 				SWIFT_SWIFT3_OBJC_INFERENCE = Off;
 				SWIFT_VERSION = 4.0;
